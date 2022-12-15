@@ -20,10 +20,10 @@ HourMinute simple(String hm) {
 class Range {
   HourMinute start;
   HourMinute end;
-  Range({
-    required this.start,
-    required this.end,
-  });
+  Range(
+     this.start,
+     this.end,
+  );
   @override
   String toString() {
     return '$start --> $end';
@@ -38,3 +38,8 @@ bool inRange(DateTime t, Range r) {
   DateTime end = DateTime(year, month, day, r.end.hour, r.end.minute);
   return start.isBefore(t) && t.isBefore(end);
 }
+
+
+
+
+

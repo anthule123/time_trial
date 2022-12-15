@@ -1,6 +1,7 @@
 import 'package:async/async.dart';
 import 'package:test/test.dart';
 import 'package:time_trial/check_time_in_range.dart';
+import 'package:time_trial/sonde_range.dart';
 
 void main() {
   group('group name', () {
@@ -11,8 +12,8 @@ void main() {
     });
     test('in time range', () {
       Range r = Range(
-        start: simple('5:30'),
-        end: simple('6:30'),
+        simple('5:30'),
+        simple('6:30'),
       );
       DateTime a = DateTime(2022, 12, 13, 6, 35);
       print(inRange(a, r));
@@ -28,15 +29,23 @@ void main() {
 
       for (int i = 0; i < 4; i++) {
         Range a = Range(
-          start: HourMinute(root[i] - 1, 30),
-          end: HourMinute(root[i], 30),
+          HourMinute(root[i] - 1, 30),
+          HourMinute(root[i], 30),
         );
         listRange.add(a);
       }
       print(listRange);
       test('a time in 4 range', () {
-        DateTime a = DateTime.now();
-        bool ans = true;
+        DateTime a = DateTime.now(); //18 :13
+        dynamic b = [for (int i = 0; i < 4; i++) inRange(a, listRange[i])];
+        var result = b.any((element) => element == true);
+        print(result);
+      });
+      test('5:00 in 4 range', () {
+        DateTime a = DateTime(2000, 1, 1, 5, 0); //18 :13
+        dynamic b = [for (int i = 0; i < 4; i++) inRange(a, listRange[i])];
+        var result = b.any((element) => element == true);
+        print(result);
       });
     });
     test('test name', () {
@@ -47,9 +56,12 @@ void main() {
       print(data);
     });
     test('test name2', () {
-      dynamic b = [true,false,false, false];
+      dynamic b = [true, false, false, false];
       var result = b.any((element) => element == true);
       print(result);
+    });
+    test('4:00 in sonde range', () {
+      expect(inSondeRange(DateTime(1, 1, 1, 4)), false);
     });
   });
 }
